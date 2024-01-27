@@ -1,34 +1,42 @@
 #include <iostream>
+#include <stack>
 #include <vector>
 
 using namespace std;
 
-int main() {
-    vector<int> stack;
+int main()
+{
+    ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+
+    stack<int> s;
     vector<char> answer;
-    int num;
-    cin >> num;
+    int n;
+    cin >> n;
 
-    int push_cnt = 1;
+    int cnt = 1;
 
-    for (int i = 0; i < num; i++) {
-        int target;
-        cin >> target;
-        while (push_cnt <= target) {
-            stack.push_back(push_cnt);
-            push_cnt++;
+    for(int i = 0; i < n; i++)
+    {
+        int input;
+        cin >> input;
+        while(cnt <= input)
+        {
+            s.push(cnt);
             answer.push_back('+');
+            cnt++;
         }
-        
-        if(target != stack.back()){
-            cout << "NO" << endl;
+
+        if(input != s.top()){
+            cout << "NO\n";
             return 0;
         }
-        stack.pop_back();
+
+        s.pop();
         answer.push_back('-');
     }
 
-    for (int i = 0; i < answer.size(); i++) {
+    for(int i = 0; i < answer.size(); i++)
+    {
         cout << answer[i] << "\n";
     }
 
