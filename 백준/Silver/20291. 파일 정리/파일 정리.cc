@@ -20,7 +20,7 @@ int main(){
         string str;
         cin >> str;
         int dotIdx = str.find('.');
-        inputString.push_back(str.substr(dotIdx+1, str.length()));
+        inputString.push_back(str.substr(dotIdx+1, str.size()));
     }
 
     sort(inputString.begin(), inputString.end());
