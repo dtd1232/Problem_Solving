@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <map>
 
 using namespace std;
 
@@ -9,12 +10,20 @@ int solution(string str1, string str2) {
     vector<string> s1;
     vector<string> s2;
     
+    map<string, int> m1;
+    map<string, int> m2;
+    
     for(int i = 1; i < str1.length(); ++i){
         string temp = "";
         if(isalpha(str1[i - 1]) && isalpha(str1[i])){
             temp += tolower(str1[i - 1]);
             temp += tolower(str1[i]);
-            s1.push_back(temp);
+            
+            if(m1.find(temp) != m1.end()){
+                m1[temp]++;
+            }else{
+                m1[temp] = 1;
+            }
         }
     }
     
@@ -23,25 +32,41 @@ int solution(string str1, string str2) {
         if(isalpha(str2[i - 1]) && isalpha(str2[i])){
             temp += tolower(str2[i - 1]);
             temp += tolower(str2[i]);
-            s2.push_back(temp);
+            
+            if(m2.find(temp) != m2.end()){
+                m2[temp]++;
+            }else{
+                m2[temp] = 1;
+            }
         }
     }
     
-    vector<string> union_vec;
-    vector<string> intersection_vec;
+    int union_count = 0;
+    int inter_count = 0;
     
-    sort(s1.begin(), s1.end());
-    sort(s2.begin(), s2.end());
+    map<string, int> union_map;
     
-    set_union(s1.begin(), s1.end(), s2.begin(), s2.end(), back_inserter(union_vec));
-    set_intersection(s1.begin(), s1.end(), s2.begin(), s2.end(), back_inserter(intersection_vec));
+    for(auto s1 : m1){
+        if(m2.find(s1.first) != m2.end()){
+            inter_count += min(m2[s1.first], s1.second);
+            union_count += max(m2[s1.first], s1.second);
+            union_map[s1.first] = 0;
+        }else{
+            union_count += s1.second;
+        }
+        
+    }
     
-    if(union_vec.empty() && intersection_vec.empty()){
-        answer = 65536;
-    }else if(union_vec.empty()){
+    for(auto s2 : m2){
+        if(union_map.find(s2.first) == union_map.end()){
+            union_count += s2.second;
+        }
+    }
+
+    if(union_count == 0){
         answer = 65536;
     }else{
-        answer = int(float(intersection_vec.size()) / float(union_vec.size()) * 65536.0f);
+        answer = int(float(inter_count) / float(union_count) * 65536.0f);
     }
     
     return answer;
