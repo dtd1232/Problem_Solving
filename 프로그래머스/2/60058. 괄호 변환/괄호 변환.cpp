@@ -20,62 +20,6 @@ bool isCorrect(string str){
     return true;
 }
 
-string changeBracket(string str){
-    string changedStr = "(";
-    
-    for(int i = 1; i < str.length() - 1; ++i){
-        if(str[i] == '('){
-            changedStr += ")";
-        }else{
-            changedStr += "(";
-        }
-    }
-    
-    changedStr += ")";
-    
-    return changedStr;
-}
-
-string getBalanceStr(string p){
-    string s1 = "";
-    string s2 = "";
-    stack<char> s;
-    
-    if(p == ""){
-        return p;
-    }
-    
-    if(isCorrect(p)){
-        return p;
-    }
-    
-    for(int i = 0; i < p.length(); ++i){
-        s1 += p[i];
-        
-        if(i == 0){
-            s.push(p[i]);
-        }else if(s.top() == ')' && p[i] == '('){
-            s.pop();
-        }else if(s.top() == '(' && p[i] == ')'){
-            s.pop();
-        }else{
-            s.push(p[i]);
-        }
-        
-        if(s.empty()){
-            for (int j = i + 1; j < p.length(); ++j) {
-                s2 += p[j];
-            }
-
-            if(isCorrect(s1)){
-                return s1 + getBalanceStr(s2);
-            }else{
-                return "(" + getBalanceStr(s2) + ")" + changeBracket(s1);
-            }
-        }
-    }
-}
-
 string solution(string p) {
     string answer = "";
     
